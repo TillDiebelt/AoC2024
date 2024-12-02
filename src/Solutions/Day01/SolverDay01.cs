@@ -39,16 +39,12 @@ namespace Solutions.Day01
     {
         public long SolvePart1(string[] lines, string text)
         {
-            //var sum = lines.Select(y => Convert.ToInt64(y)).Map(x => x).Reduce((x, y) => x + y);
-
             //Solve
             long result = 0;
             List<long> left = new List<long>();
             List<long> right = new List<long>();
             for (int i = 0; i < lines.Length; i++)
             {
-                int num1 = 0;
-                int num2 = 0;
                 var longs = lines[i].Split("   ", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt64(x)).ToList();
                 left.Add(longs[0]);
                 right.Add(longs[1]);
@@ -71,8 +67,6 @@ namespace Solutions.Day01
             List<long> right = new List<long>();
             for (int i = 0; i < lines.Length; i++)
             {
-                int num1 = 0;
-                int num2 = 0;
                 var longs = lines[i].Split("   ", StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt64(x)).ToList();
                 left.Add(longs[0]);
                 right.Add(longs[1]);

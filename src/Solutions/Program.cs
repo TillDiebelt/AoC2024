@@ -12,7 +12,7 @@ namespace Solutions
     {
         public string[] lines;
         public int Day = 1;
-        public ISolver Solver = new SolverDay01();
+        public ISolver Solver = new SolverDay02();
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -35,8 +35,8 @@ namespace Solutions
     
     class Program
     {
-        public static int day = 1;
-        public static ISolver solver = new SolverDay01();
+        public static int day = 2;
+        public static ISolver solver = new SolverDay02();
         public static string inputPath = "../../../input/inputDay"+day;
         public static string inputPathTest = "../../../input/inputTest";
         
@@ -57,10 +57,10 @@ namespace Solutions
             Console.WriteLine("\nTests:");
             var test1 = solver.SolvePart1(lines, input);
             Console.WriteLine(test1);
-            if (test1 == 11) Console.WriteLine("test 1 successful"); else Console.WriteLine("test 1 failed");
+            if (test1 == 2) Console.WriteLine("test 1 successful"); else Console.WriteLine("test 1 failed");
             var test2 = solver.SolvePart2(lines, input);
             Console.WriteLine(test2);
-            if (test2 == 31) Console.WriteLine("test 2 successful"); else Console.WriteLine("test 2 failed");
+            if (test2 == 4) Console.WriteLine("test 2 successful"); else Console.WriteLine("test 2 failed");
             
             //Benchmark
             //Console.WriteLine("\nBenchmark:");
