@@ -20,6 +20,33 @@ namespace AOCLib
             return pathfinder.FindPath(start, end);
         }*/
 
+        public static List<long> GetNumbers(this string self)
+        {
+            List<long> numbers = new List<long>();
+            long current = 0;
+            bool foundNumber = false;
+            for(int i = 0; i < self.Length; i++)
+            {
+                if (self[i] >= 48 && self[i] <= 57)
+                {
+                    foundNumber = true;
+                    current *= 10;
+                    current += self[i] - 48;
+                }
+                else
+                {
+                    if(foundNumber)
+                        numbers.Add(current);
+                    foundNumber = false;
+                    current = 0;
+                }
+            }
+            if (foundNumber)
+                numbers.Add(current);
+
+            return numbers;
+        }
+
         public static int ToDigit(this char self)
         {
             return self - 48;
