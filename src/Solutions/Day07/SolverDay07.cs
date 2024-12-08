@@ -39,6 +39,7 @@ namespace Solutions
             return perms;
         }
 
+        //dynamic programming if needed faster, but to lazy
         public bool trySolve(List<long> nums, long res, List<string> operators)
         {
             var solvers = perms(nums.Count - 2, operators);
