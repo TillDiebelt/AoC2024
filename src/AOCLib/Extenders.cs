@@ -20,6 +20,16 @@ namespace AOCLib
             return pathfinder.FindPath(start, end);
         }*/
 
+        public static bool InBounds<T>(this T[,] self, int x, int y)
+        {
+            return (x >= self.GetLowerBound(1) && x <= self.GetUpperBound(1) && y >= self.GetLowerBound(0) && y <= self.GetUpperBound(0));
+        }
+        
+        public static bool InBounds<T>(this T[,] self, (int x, int y) coord)
+        {
+            return (coord.x >= self.GetLowerBound(1) && coord.x <= self.GetUpperBound(1) && coord.y >= self.GetLowerBound(0) && coord.y <= self.GetUpperBound(0));
+        }
+
         public static List<long> GetNumbers(this string self)
         {
             List<long> numbers = new List<long>();

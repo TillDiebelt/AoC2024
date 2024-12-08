@@ -45,7 +45,7 @@ namespace Solutions
                         int newX = antananasA.x + distX;
                         int newY = antananasA.y + distY;
                         if (distX == 0 && distY == 0) continue;
-                        if(newX >= 0 && newX < lines[0].Length && newY >= 0 && newY < lines.Length)
+                        if(map.InBounds(newX, newY))
                         {
                             antinodes.Add((newX, newY));
                             if (map[antananasA.y + distY, antananasA.x + distX] == '.')
@@ -103,7 +103,7 @@ namespace Solutions
                         {
                             int moveX = antananasA.x + i * distX;
                             int moveY = antananasA.y + i * distY;
-                            if (moveX >= 0 && moveX < lines[0].Length && moveY >= 0 && moveY < lines.Length)
+                            if (map.InBounds(moveX, moveY))
                             {
                                 antinodes.Add((moveX, moveY));
                                 if (map[moveY, moveX] == '.')
