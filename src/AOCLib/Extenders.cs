@@ -82,24 +82,125 @@ namespace AOCLib
             return (self.Item1 - origin.x, self.Item2 - origin.y);
         }
 
-        public static IEnumerable<(int x, int y)> Neighbours<T>(this T[][] self, int x, int y)
+        public static IEnumerable<(int x, int y)> Neighbours<T>(this T[][] self, int x, int y, bool ignoreBounds = false)
         {
             List<(int x, int y)> neighbours = new List<(int x, int y)>();
-            if (x - 1 >= 0) neighbours.Add((x - 1, y));
-            if (x + 1 < self[y].Length) neighbours.Add((x + 1, y));
-            if (y - 1 >= 0) neighbours.Add((x, y - 1));
-            if (y + 1 < self.Length) neighbours.Add((x, y + 1));
+            if (x - 1 >= 0 || ignoreBounds) neighbours.Add((x - 1, y));
+            if (x + 1 < self[y].Length || ignoreBounds) neighbours.Add((x + 1, y));
+            if (y - 1 >= 0 || ignoreBounds) neighbours.Add((x, y - 1));
+            if (y + 1 < self.Length || ignoreBounds) neighbours.Add((x, y + 1));
             return neighbours;
         }
 
-        public static IEnumerable<(int x, int y)> Neighbours<T>(this T[,] self, int x, int y)
+        public static IEnumerable<(int x, int y)> Neighbours(this (int x, int y) self)
         {
             List<(int x, int y)> neighbours = new List<(int x, int y)>();
-            if (x - 1 >= 0) neighbours.Add((x - 1, y));
-            if (x + 1 <= self.GetUpperBound(1)) neighbours.Add((x + 1, y));
-            if (y - 1 >= 0) neighbours.Add((x, y - 1));
-            if (y + 1 <= self.GetUpperBound(0)) neighbours.Add((x, y + 1));
+            neighbours.Add((self.x - 1, self.y));
+            neighbours.Add((self.x + 1, self.y));
+            neighbours.Add((self.x, self.y - 1));
+            neighbours.Add((self.x, self.y + 1));
             return neighbours;
+        }
+
+        public static IEnumerable<(int x, int y)> Neighbours<T>(this T[,] self, int x, int y, bool ignoreBounds = false)
+        {
+            List<(int x, int y)> neighbours = new List<(int x, int y)>();
+            if (x - 1 >= 0 || ignoreBounds) neighbours.Add((x - 1, y));
+            if (x + 1 <= self.GetUpperBound(1) || ignoreBounds) neighbours.Add((x + 1, y));
+            if (y - 1 >= 0 || ignoreBounds) neighbours.Add((x, y - 1));
+            if (y + 1 <= self.GetUpperBound(0) || ignoreBounds) neighbours.Add((x, y + 1));
+            return neighbours;
+        }
+
+        public static T[,] RotateRight<T>(this T[,] self)
+        {
+            T[,] rotated = new T[self.GetUpperBound(1) + 1, self.GetUpperBound(0) + 1];
+            for (int y = 0; y <= self.GetUpperBound(0); y++)
+            {
+                for (int x = 0; x <= self.GetUpperBound(1); x++)
+                {
+                    rotated[x, self.GetUpperBound(0) - y] = self[y, x];
+                }
+            }
+            return rotated;
+        }
+
+        public static T[,] RotateLeft<T>(this T[,] self)
+        {
+            T[,] rotated = new T[self.GetUpperBound(1) + 1, self.GetUpperBound(0) + 1];
+            for (int y = 0; y <= self.GetUpperBound(0); y++)
+            {
+                for (int x = 0; x <= self.GetUpperBound(1); x++)
+                {
+                    rotated[self.GetUpperBound(1) - x, y] = self[y, x];
+                }
+            }
+            return rotated;
+        }
+
+        public static T[,] FlipVertical<T>(this T[,] self)
+        {
+            T[,] flipped = new T[self.GetUpperBound(0) + 1, self.GetUpperBound(1) + 1];
+            for (int y = 0; y <= self.GetUpperBound(0); y++)
+            {
+                for (int x = 0; x <= self.GetUpperBound(1); x++)
+                {
+                    flipped[y, self.GetUpperBound(1) - x] = self[y, x];
+                }
+            }
+            return flipped;
+        }
+
+        public static T[,] FlipHorizontal<T>(this T[,] self)
+        {
+            T[,] flipped = new T[self.GetUpperBound(0) + 1, self.GetUpperBound(1) + 1];
+            for (int y = 0; y <= self.GetUpperBound(0); y++)
+            {
+                for (int x = 0; x <= self.GetUpperBound(1); x++)
+                {
+                    flipped[self.GetUpperBound(0) - y, x] = self[y, x];
+                }
+            }
+            return flipped;
+        }
+
+        //if skipoutside is true, the function will not return positions that are outside the bounds of the map
+        //dontCares can be inside the mask where it does not mapper if it is the same as the map
+        //returns the top left position of the mask if it fits
+        public static IEnumerable<(int x, int y)> FitsMask<T>(this T[,] self, T[,] mask, T dontCare = default(T))
+        {
+            for (int y = 0; y <= mask.GetUpperBound(0); y++)
+            {
+                for (int x = 0; x <= mask.GetUpperBound(1); x++)
+                {
+                    bool fits = true;
+                    for (int maskX = 0; maskX <= mask.GetUpperBound(1); maskX++)
+                    {
+                        if(!fits)
+                            break;
+                        for (int maskY = 0; maskY <= mask.GetUpperBound(0); maskY++)
+                        {
+                            if (!self.InBounds(x + maskX, y + maskY))
+                            {
+                                fits = false;
+                                break;
+                            }
+                            if (mask[maskY, maskX].Equals(self[y + maskY, x + maskX]) || dontCare != null && !dontCare.Equals(default(T)) && dontCare.Equals(mask[maskY, maskX]))
+                            {
+                            }
+                            else
+                            {
+                                fits = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (fits)
+                    {
+                        yield return (x, y);
+                    }
+                }
+            }
         }
 
         public static IEnumerable<(int x, int y)> NeighboursDiag<T>(this T[][] self, int x, int y)
