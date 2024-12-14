@@ -35,6 +35,7 @@ namespace AOCLib
             List<long> numbers = new List<long>();
             long current = 0;
             bool foundNumber = false;
+            bool neg = false;
             for(int i = 0; i < self.Length; i++)
             {
                 if (self[i] >= 48 && self[i] <= 57)
@@ -46,11 +47,22 @@ namespace AOCLib
                 else
                 {
                     if(foundNumber)
+                    {
+                        if (neg)
+                            current *= -1;
                         numbers.Add(current);
+                    }
                     foundNumber = false;
+                    neg = false;
+                    if (self[i] == '-')
+                    {
+                        neg = true;
+                    }
                     current = 0;
                 }
             }
+            if (neg)
+                current *= -1;
             if (foundNumber)
                 numbers.Add(current);
 
