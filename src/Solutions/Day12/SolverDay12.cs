@@ -61,10 +61,6 @@ namespace Solutions
             return result;
         }
 
-
-
-
-
         private (int perimeter, int area, int edges) Floodfill(ref int[,] map, ref int[,] seen, (int x, int y) start)
         {
             List<(int x, int y)> perimeter = new(); //all fields which touch the area

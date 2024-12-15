@@ -26,16 +26,15 @@ namespace Solutions
 
             public void Move()
             {
-                this.x = mod((x + dx), maxX);
-                this.y = mod((y + dy), maxY);
+                this.x = (x + dx).mod(maxX);
+                this.y = (y + dy).mod(maxY);
             }
-
+            
             //negativ % needs this:
             long mod(long x, long m)
             {
                 return (x % m + m) % m;
             }
-
 
             public int Quadrant()
             {

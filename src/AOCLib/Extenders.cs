@@ -30,7 +30,7 @@ namespace AOCLib
             return (coord.x >= self.GetLowerBound(1) && coord.x <= self.GetUpperBound(1) && coord.y >= self.GetLowerBound(0) && coord.y <= self.GetUpperBound(0));
         }
 
-        public static List<long> GetNumbers(this string self)
+        public static List<long> GetNumbers(this string self, bool allowNegative = true)
         {
             List<long> numbers = new List<long>();
             long current = 0;
@@ -48,7 +48,7 @@ namespace AOCLib
                 {
                     if(foundNumber)
                     {
-                        if (neg)
+                        if (neg && allowNegative)
                             current *= -1;
                         numbers.Add(current);
                     }
@@ -174,6 +174,11 @@ namespace AOCLib
                 }
             }
             return flipped;
+        }
+
+        public static long mod(this long self, long modulo)
+        {
+            return (self % modulo + modulo) % modulo;
         }
 
         //if skipoutside is true, the function will not return positions that are outside the bounds of the map
