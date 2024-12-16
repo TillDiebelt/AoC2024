@@ -348,7 +348,7 @@ namespace AOCLib
             }
             return current[0];
         }
-
+                
         public static BigInteger Product<T>(this IEnumerable<T> self, Func<T, BigInteger> convert)
         {
             return self.Aggregate((BigInteger)1, (BigInteger x, T y) => convert(y) * x);
